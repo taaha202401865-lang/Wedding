@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zubair Weds Sana - Wedding Invitation</title>
+    <!-- Elegant Font Choices -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #3b1115; /* Dark Crimson Base */
+            color: #eaeaea; /* Royal White Silver Text */
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        h1, h2, h3, .couple-names {
+            font-family: 'Cinzel', serif;
+            color: #d4af37; /* Royal Gold */
+            letter-spacing: 2px;
+        }
+
+        /* --- ROYAL ENTRANCE CURTAINS --- */
+        #gate-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: 999;
+            display: flex;
+            transition: visibility 1s;
+        }
+
+        .gate {
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(135deg, #5c1d24 0%, #3b1115 100%);
+            display: flex;
+            align-items: center;
+            transition: transform 1.5s cubic-bezier(0.77, 0, 0.175, 1);
+            position: relative;
+        }
+
+        /* Ornate Gold Filigree Borders on Royal Gates */
+        .gate-left { 
+            justify-content: flex-end; 
+            border-right: 3px double #d4af37; 
+        }
+        .gate-right { 
+            justify-content: flex-start; 
+            border-left: 3px double #d4af37; 
+        }
+
+        .gate-left::before, .gate-right::before {
+            content: '';
+            position: absolute;
+            top: 20px; bottom: 20px;
+            width: calc(100% - 40px);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            pointer-events: none;
+        }
+        .gate-left::before { right: 10px; border-radius: 20px 0 0 20px; }
+        .gate-right::before { left: 10px; border-radius: 0 20px 20px 0; }
+
+        .gate-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #5c1d24;
+            border: 3px double #d4af37;
+            color: #d4af37;
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-family: 'Cinzel', serif;
+            font-weight: bold;
+            font-size: 0.85rem;
+            z-index: 1000;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.4s ease;
+        }
+
+        .gate-left .gate-btn { right: -45px; }
+        .gate-right .gate-btn { left: -45px; display: none; } 
+
+        .gate-btn:hover {
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.8);
+            background: #d4af37;
+            color: #3b1115;
+            transform: translateY(-50%) scale(1.05);
+        }
+
+        /* Gate Open State Animation */
+        .loaded .gate-left { transform: translateX(-100%); }
+        .loaded .gate-right { transform: translateX(100%); }
+        .loaded #gate-overlay { visibility: hidden; }
+
+        /* --- MAIN WRAPPER & SCROLL CONTENT --- */
+        .invitation-container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: linear-gradient(180deg, #441419 0%, #290a0d 100%);
+            border-left: 2px solid rgba(212, 175, 55, 0.4);
+            border-right: 2px solid rgba(212, 175, 55, 0.4);
+            padding: 60px 25px;
+            text-align: center;
+            box-shadow: 0 0 60px rgba(0,0,0,0.8);
+        }
+
+        /* Elegant Divider lines */
+        .gold-divider {
+            width: 70%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #d4af37, transparent);
+            margin: 40px auto;
+            position: relative;
+        }
+        .gold-divider::after {
+            content: '✦';
+            color: #d4af37;
+            position: absolute;
+            top: -9px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #350e12;
+            padding: 0 10px;
+            font-size: 0.8rem;
+        }
+
+        /* Ornate Crimson Cards with Subtle Silver Tint Inner Border */
+        .ornate-card {
+            border: 1px solid #d4af37;
+            padding: 35px 20px;
+            border-radius: 8px;
+            background: rgba(92, 29, 36, 0.4);
+            position: relative;
+            margin-bottom: 40px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+        .ornate-card::before {
+            content: '';
+            position: absolute;
+            top: 6px; left: 6px; right: 6px; bottom: 6px;
+            border: 1px solid rgba(234, 234, 234, 0.2); /* Silver Accent Frame */
+            pointer-events: none;
+            border-radius: 4px;
+        }
+
+        .welcome-tag {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: #eaeaea;
+            margin-bottom: 10px;
+        }
+
+        .couple-names {
+            font-size: 2.4rem;
+            margin: 15px 0;
+            text-shadow: 0 3px 12px rgba(212,175,55,0.4);
+        }
+        .ampersand {
+            font-size: 1.6rem;
+            color: #eaeaea;
+            font-style: italic;
+        }
+
+        /* --- INTERACTIVE SCRATCH CARD --- */
+        .scratch-box {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            margin: 25px 0;
+            background: #24090c;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #d4af37;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.6);
+        }
+        .scratch-reveal-content {
+            position: absolute;
+            width: 100%; height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1;
+            padding: 15px;
+        }
+        .scratch-reveal-content h4 {
+            color: #eaeaea;
+            font-family: 'Cinzel', serif;
+            font-size: 1.3rem;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+        #scratch-canvas {
+            position: absolute;
+            top:0; left:0; width:100%; height:100%;
+            z-index: 2;
+            cursor: pointer;
+            touch-action: none;
+        }
+
+        /* --- COUNTDOWN TIMER --- */
+        .countdown-container {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 25px;
+        }
+        .time-box {
+            background: rgba(92, 29, 36, 0.6);
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            padding: 12px;
+            min-width: 75px;
+            border-radius: 6px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        .time-box span {
+            display: block;
+            font-size: 1.6rem;
+            color: #d4af37;
+            font-weight: bold;
+        }
+        .time-box label {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #eaeaea;
+        }
+
+        /* --- TIMELINE --- */
+        .timeline {
+            text-align: left;
+            margin: 30px 10px;
+            border-left: 2px solid #d4af37;
+            padding-left: 25px;
+        }
+        .timeline-event {
+            position: relative;
+            margin-bottom: 30px;
+        }
+        .timeline-event::before {
+            content: '';
+            position: absolute;
+            left: -31px; top: 4px;
+            width: 10px; height: 10px;
+            background: #eaeaea;
+            border: 2px solid #d4af37;
+            border-radius: 50%;
+        }
+        .timeline-time {
+            font-size: 0.9rem;
+            color: #d4af37;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        .timeline-title {
+            font-size: 1.1rem;
+            color: #eaeaea;
+            margin-top: 2px;
+        }
+
+        /* --- VENUE / MAP MAPBOX --- */
+        .map-box {
+            width: 100%;
+            height: 180px;
+            background: #1e0709;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 6px;
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #eaeaea;
+            padding: 20px;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.5);
+        }
+        .map-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 25px;
+            border: 1px solid #d4af37;
+            background: rgba(92, 29, 36, 0.4);
+            color: #d4af37;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            font-weight: bold;
+            transition: 0.3s;
+            border-radius: 4px;
+        }
+        .map-btn:hover {
+            background: #d4af37;
+            color: #3b1115;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+        }
+
+        /* --- RSVP FORM --- */
+        .rsvp-form input, .rsvp-form select, .rsvp-form textarea {
+            width: 100%;
+            padding: 14px;
+            margin-bottom: 15px;
+            background: #1f0608;
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            color: #fff;
+            border-radius: 4px;
+            font-size: 0.95rem;
+        }
+        .rsvp-form input:focus, .rsvp-form select:focus {
+            outline: none;
+            border-color: #eaeaea;
+            box-shadow: 0 0 8px rgba(234,234,234,0.2);
+        }
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(90deg, #bfa032, #d4af37, #bfa032);
+            color: #290a0d;
+            border: none;
+            font-family: 'Cinzel', serif;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            letter-spacing: 1px;
+            transition: 0.3s;
+            border-radius: 4px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+        }
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Royal Entrance Gate Mechanism -->
+    <div id="gate-overlay">
+        <div class="gate gate-left">
+            <button class="gate-btn" onclick="openGate()">ENTER</button>
+        </div>
+        <div class="gate gate-right"></div>
+    </div>
+
+    <!-- Main Invitation Continuous Page -->
+    <div class="invitation-container">
+        
+        <!-- Welcome intro -->
+        <p class="welcome-tag">Together with their families</p>
+        <h3 style="font-size: 0.9rem; text-transform: uppercase; letter-spacing: 3px; color: #d4af37;">Save The Date</h3>
+        
+        <div class="gold-divider"></div>
+
+        <!-- Couple Names -->
+        <div class="ornate-card">
+            <h2 class="couple-names">Zubair Akbar</h2>
+            <div class="ampersand">weds</div>
+            <h2 class="couple-names">Sana Saddique</h2>
+            <p style="font-size: 0.9rem; color: #eaeaea; margin-top: 15px; font-style: italic; opacity: 0.8;">
+                "And We created you in pairs."
+            </p>
+        </div>
+
+        <div class="gold-divider"></div>
+
+        <!-- Scratch to reveal card -->
+        <h3>When & Where</h3>
+        <p style="font-size: 0.85rem; color: #eaeaea; margin-top: 5px; opacity: 0.7;">Scratch the card below to reveal the royal venue details</p>
+        
+        <div class="scratch-box">
+            <div class="scratch-reveal-content">
+                <h4>Royal Paragon Marquee</h4>
+                <p style="color: #d4af37; font-weight: bold; font-size: 1.15rem; margin-top: 3px;">August 1, 2026</p>
+                <p style="font-size: 0.85rem; color: #eaeaea; margin-top: 4px; max-width: 85%;">
+                    📍 Pull Abdullah West Canal Road, Samundri Road, Faisalabad.
+                </p>
+            </div>
+            <canvas id="scratch-canvas"></canvas>
+        </div>
+
+        <div class="gold-divider"></div>
+
+        <!-- Countdown Timer -->
+        <h3>Countdown to Forever</h3>
+        <div class="countdown-container">
+            <div class="time-box"><span id="days">00</span><label>Days</label></div>
+            <div class="time-box"><span id="hours">00</span><label>Hours</label></div>
+            <div class="time-box"><span id="minutes">00</span><label>Mins</label></div>
+            <div class="time-box"><span id="seconds">00</span><label>Secs</label></div>
+        </div>
+
+        <div class="gold-divider"></div>
+
+        <!-- Timeline Section -->
+        <h3>Program Timeline</h3>
+        <div class="timeline">
+            <div class="timeline-event">
+                <p class="timeline-time">07:00 PM</p>
+                <p class="timeline-title">Wedding Procession Ceremony Begins</p>
+            </div>
+            <div class="timeline-event">
+                <p class="timeline-time">10:00 PM</p>
+                <p class="timeline-title">Concludes & Wrap-up</p>
+            </div>
+        </div>
+
+        <div class="gold-divider"></div>
+
+        <!-- Venue / Map Section -->
+        <h3>Location Map</h3>
+        <div class="map-box">
+            <p style="font-weight: 600; color: #d4af37; margin-bottom: 5px;">Royal Paragon Marquee</p>
+            <p style="font-size: 0.8rem; opacity: 0.7; line-height: 1.4;">Faisalabad, Pakistan</p>
+        </div>
+        <a href="https://maps.app.goo.gl/QUP92K22qZhHxbu27" target="_blank" class="map-btn">View on Google Maps</a>
+
+        <div class="gold-divider"></div>
+
+        <!-- SOPs Section -->
+        <div class="ornate-card" style="text-align: left;">
+            <h3 style="text-align: center; margin-bottom: 20px; font-size: 1.2rem;">Celebration Rules</h3>
+            <p style="font-size: 0.9rem; line-height: 1.9; color: #eaeaea;">
+                ✨ <strong>Dress to impress.</strong> Arrive glamorous.<br>
+                🔥 High-energy celebration and <strong>zero diet plans ahead.</strong><br>
+                🎉 <strong>Bring your loudest cheers.</strong>
+            </p>
+        </div>
+
+        <div class="gold-divider"></div>
+
+        <!-- RSVP Form Section -->
+        <h3>Will You Attend?</h3>
+        <p style="font-size: 0.85rem; color: #eaeaea; margin-bottom: 25px; opacity: 0.7;">Kindly respond by July 15, 2026</p>
+        
+        <form class="rsvp-form" onsubmit="event.preventDefault(); alert('Thank you for your response!');">
+            <input type="text" placeholder="Your Full Name" required>
+            <select required>
+                <option value="" disabled selected>Are you attending?</option>
+                <option value="yes">Yes, I will be there</option>
+                <option value="no">Sorry, I can't make it</option>
+            </select>
+            <textarea rows="3" placeholder="Send your love and blessings..."></textarea>
+            <button type="submit" class="submit-btn">Send RSVP Message</button>
+        </form>
+
+        <div class="gold-divider"></div>
+
+        <p style="font-family: 'Cinzel', serif; color: #d4af37; font-size: 1.3rem; margin-top: 20px;">Thank You</p>
+        <p style="font-size: 0.85rem; opacity: 0.7; margin-top: 5px;">We can't wait to celebrate with you!</p>
+
+    </div>
+
+    <script>
+        // Open Entrance Gate Animation
+        function openGate() {
+            document.body.classList.add('loaded');
+        }
+
+        // Scratch Card Logic
+        const canvas = document.getElementById('scratch-canvas');
+        const ctx = canvas.getContext('2d');
+        let isDrawing = false;
+
+        function initCanvas() {
+            canvas.width = canvas.parentElement.offsetWidth;
+            canvas.height = canvas.parentElement.offsetHeight;
+            
+            // Premium Royal White Silver Silk Coating Finish
+            ctx.fillStyle = '#dbdbdb'; 
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Elegant pattern line on top layer
+            ctx.strokeStyle = 'rgba(189, 160, 50, 0.4)';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(10, 10, canvas.width - 20, canvas.height - 20);
+
+            ctx.fillStyle = '#5c1d24';
+            ctx.font = 'bold 13px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('✨ SCRATCH THE SILK TO REVEAL ✨', canvas.width / 2, canvas.height / 2 + 5);
+        }
+
+        function scratch(e) {
+            if (!isDrawing) return;
+            const rect = canvas.getBoundingClientRect();
+            const x = (e.clientX || e.touches[0].clientX) - rect.left;
+            const y = (e.clientY || e.touches[0].clientY) - rect.top;
+            
+            ctx.globalCompositeOperation = 'destination-out';
+            ctx.beginPath();
+            ctx.arc(x, y, 24, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        canvas.addEventListener('mousedown', () => isDrawing = true);
+        canvas.addEventListener('mouseup', () => isDrawing = false);
+        canvas.addEventListener('mousemove', scratch);
+        canvas.addEventListener('touchstart', () => isDrawing = true);
+        canvas.addEventListener('touchend', () => isDrawing = false);
+        canvas.addEventListener('touchmove', scratch);
+
+        // Target Live Countdown Timer (August 1, 2026)
+        const targetDate = new Date("August 1, 2026 19:00:00").getTime();
+
+        const timerInterval = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerText = days < 10 ? '0' + days : days;
+            document.getElementById("hours").innerText = hours < 10 ? '0' + hours : hours;
+            document.getElementById("minutes").innerText = minutes < 10 ? '0' + minutes : minutes;
+            document.getElementById("seconds").innerText = seconds < 10 ? '0' + seconds : seconds;
+
+            if (distance < 0) {
+                clearInterval(timerInterval);
+                document.querySelector(".countdown-container").innerHTML = "<p style='color:#d4af37'>The Celebration Has Begun!</p>";
+            }
+        }, 1000);
+
+        window.onload = initCanvas;
+    </script>
+</body>
+</html>
